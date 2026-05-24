@@ -3,7 +3,19 @@ import { io } from 'socket.io-client';
 import { useAuth } from './AuthContext';
 
 const SocketContext = createContext(null);
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || undefined;
+
+const getSocketUrl = () => {
+  if (import.meta.env.VITE_SOCKET_URL) return import.meta.env.VITE_SOCKET_URL;
+
+  const apiUrl = import.meta.env.VITE_API_URL;
+  if (apiUrl?.startsWith('http')) {
+    return apiUrl.replace(/\/api\/?$/, '');
+  }
+
+  return undefined;
+};
+
+const SOCKET_URL = getSocketUrl();
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);

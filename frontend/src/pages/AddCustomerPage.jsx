@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, User, DollarSign, Loader2, Clock, Hash } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Modal from '../components/ui/Modal';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
@@ -18,6 +19,7 @@ export default function AddCustomerPage() {
   const [form, setForm] = useState({ name: '', price: '', customPrice: '' });
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [queueInfo, setQueueInfo] = useState(null);
+  const navigate = useNavigate();
 
   // Fetch current queue info
   const fetchQueueInfo = async () => {

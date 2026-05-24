@@ -11,16 +11,33 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
-    if (token && savedUser) {
-      setUser(JSON.parse(savedUser));
-      setIsAuthenticated(true);
+
+    try {
+      const parsedUser = savedUser ? JSON.parse(savedUser) : null;
+
+      if (token && token !== 'undefined' && parsedUser?.email) {
+        setUser(parsedUser);
+        setIsAuthenticated(true);
+      } else {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
+    } catch {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
+
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
     const response = await api.post('/auth/login', { email, password });
-    const { token, user: userData } = response.data;
+    const { token, user: userData } = response.data || {};
+
+    if (!token || !userData?.email) {
+      throw new Error('رد السيرفر غير صالح. تأكد من رابط API ثم أعد المحاولة.');
+    }
+
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
