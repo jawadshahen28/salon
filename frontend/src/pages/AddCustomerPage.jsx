@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, User, DollarSign, Loader2, Clock, Hash } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Plus, User, DollarSign, Loader2, Clock, Hash, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../components/ui/Modal';
 import api from '../utils/api';
@@ -21,7 +21,6 @@ export default function AddCustomerPage() {
   const [queueInfo, setQueueInfo] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch current queue info
   const fetchQueueInfo = async () => {
     try {
       const res = await api.get('/customers/queue');
@@ -59,7 +58,7 @@ export default function AddCustomerPage() {
     try {
       const res = await api.post('/customers', { name: form.name, price });
       const customer = res.data.data;
-      toast.success(`✅ تم إضافة ${form.name} - رقم الدور: ${customer.queueNumber}`);
+      toast.success(`تم إضافة ${form.name} - رقم الدور: ${customer.queueNumber}`);
       setForm({ name: '', price: '', customPrice: '' });
       setSelectedPrice(null);
       setIsOpen(false);
@@ -72,94 +71,85 @@ export default function AddCustomerPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] gap-8">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 right-1/3 w-72 h-72 bg-gold-500/3 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 left-1/3 w-72 h-72 bg-gold-600/3 rounded-full blur-3xl" />
-      </div>
-
+    <div className="relative flex min-h-[74vh] flex-col items-center justify-center gap-8 overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center relative z-10"
+        className="relative z-10 max-w-2xl text-center"
       >
-        <div className="flex items-center justify-center gap-3 mb-3">
+        <div className="mb-5 flex items-center justify-center gap-3">
           <BarberLogo size="sm" />
-          <h2 className="text-3xl font-black text-gradient-gold">إضافة زبون جديد</h2>
+          <div className="text-right">
+            <p className="page-kicker mb-2 w-fit">Queue Intake</p>
+            <h2 className="page-title text-gradient-cyber">إضافة زبون جديد</h2>
+          </div>
         </div>
-        <p className="text-white/30">اضغط على الزر لإضافة زبون للدور</p>
+        <p className="page-subtitle mx-auto">ابدأ بطاقة دور جديدة مع السعر والوقت المتوقع بشكل فوري.</p>
       </motion.div>
 
-      {/* Big add button */}
       <motion.button
-        initial={{ opacity: 0, scale: 0.5 }}
+        initial={{ opacity: 0, scale: 0.86 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 15 }}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.95 }}
+        transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 16 }}
+        whileHover={{ scale: 1.04, y: -4 }}
+        whileTap={{ scale: 0.96 }}
         onClick={handleOpen}
-        className="relative w-48 h-48 rounded-full bg-gradient-to-br from-gold-600/20 to-gold-500/10
-          border-2 border-gold-500/40 flex flex-col items-center justify-center gap-3
-          hover:border-gold-400/70 hover:from-gold-600/30 hover:to-gold-500/20
-          transition-all duration-300 cursor-pointer group glow-gold hover:glow-gold"
+        className="group relative flex h-52 w-52 flex-col items-center justify-center gap-4 overflow-hidden rounded-[2rem] border border-neon-cyan/25 bg-neon-cyan/10 shadow-2xl shadow-neon-cyan/10 transition-all duration-300 hover:border-neon-green/35 hover:bg-neon-green/10"
       >
-        {/* Animated ring */}
-        <div className="absolute inset-0 rounded-full border-2 border-gold-500/20 animate-ping opacity-30" />
-        <div className="absolute inset-3 rounded-full border border-gold-500/10 animate-pulse" />
-
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gold-600 to-gold-500 flex items-center justify-center shadow-lg shadow-gold-500/30 group-hover:shadow-gold-500/50 transition-shadow">
-          <Plus className="w-8 h-8 text-dark-950 stroke-[3]" />
+        <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-l from-transparent via-white/60 to-transparent" />
+        <div className="flex h-20 w-20 items-center justify-center rounded-[1.6rem] border border-neon-gold/30 bg-neon-gold/14 shadow-lg shadow-neon-gold/15 transition-all duration-300 group-hover:rotate-3">
+          <Plus className="h-10 w-10 text-neon-gold stroke-[3]" />
         </div>
-        <span className="text-gold-400 font-black text-lg">إضافة زبون</span>
+        <span className="text-xl font-black text-white">إضافة زبون</span>
+        <span className="text-xs font-bold text-white/38">فتح نموذج الإدخال</span>
       </motion.button>
 
-      {/* Queue hint */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="text-white/20 text-sm"
+        className="text-sm text-white/34"
       >
-        أو اذهب إلى <button onClick={() => navigate('/queue')} className="text-gold-400/60 hover:text-gold-400 underline">صفحة الدور</button> لإدارة الزبائن
+        أو اذهب إلى{' '}
+        <button onClick={() => navigate('/queue')} className="inline-flex items-center gap-1 font-black text-neon-cyan transition-colors hover:text-white">
+          صفحة الدور
+          <ArrowLeft className="h-3.5 w-3.5" />
+        </button>
       </motion.p>
 
-      {/* Modal */}
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title="إضافة زبون جديد"
       >
-        {/* Queue info */}
         {queueInfo && (
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 text-center">
-              <Hash className="w-4 h-4 text-blue-400 mx-auto mb-1" />
-              <p className="text-blue-400 font-black text-xl">{queueInfo.nextNumber}</p>
-              <p className="text-white/30 text-xs">رقم الدور</p>
+          <div className="mb-6 grid grid-cols-3 gap-3">
+            <div className="metric-panel border-neon-cyan/20 bg-neon-cyan/10 p-3">
+              <Hash className="mx-auto mb-1 h-4 w-4 text-neon-cyan" />
+              <p className="text-xl font-black text-neon-cyan">{queueInfo.nextNumber}</p>
+              <p className="text-xs text-white/32">رقم الدور</p>
             </div>
-            <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-3 text-center">
-              <Clock className="w-4 h-4 text-orange-400 mx-auto mb-1" />
-              <p className="text-orange-400 font-black text-xl">{queueInfo.waitMinutes}</p>
-              <p className="text-white/30 text-xs">دقيقة انتظار</p>
+            <div className="metric-panel border-neon-gold/20 bg-neon-gold/10 p-3">
+              <Clock className="mx-auto mb-1 h-4 w-4 text-neon-gold" />
+              <p className="text-xl font-black text-neon-gold">{queueInfo.waitMinutes}</p>
+              <p className="text-xs text-white/32">دقيقة انتظار</p>
             </div>
-            <div className="bg-gold-500/10 border border-gold-500/20 rounded-xl p-3 text-center">
-              <User className="w-4 h-4 text-gold-400 mx-auto mb-1" />
-              <p className="text-gold-400 font-black text-xl">{queueInfo.count}</p>
-              <p className="text-white/30 text-xs">قبله</p>
+            <div className="metric-panel border-neon-green/20 bg-neon-green/10 p-3">
+              <User className="mx-auto mb-1 h-4 w-4 text-neon-green" />
+              <p className="text-xl font-black text-neon-green">{queueInfo.count}</p>
+              <p className="text-xs text-white/32">قبله</p>
             </div>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Name */}
           <div>
-            <label className="block text-white/70 text-sm mb-2 font-semibold">اسم الزبون *</label>
+            <label className="mb-2 block text-sm font-bold text-white/68">اسم الزبون *</label>
             <div className="relative">
-              <User className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <User className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
               <input
                 type="text"
-                className="input-field pr-10"
+                className="input-field pr-11"
                 placeholder="أدخل اسم الزبون"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -169,30 +159,29 @@ export default function AddCustomerPage() {
             </div>
           </div>
 
-          {/* Price */}
           <div>
-            <label className="block text-white/70 text-sm mb-2 font-semibold">السعر *</label>
-            <div className="grid grid-cols-3 gap-2 mb-3">
+            <label className="mb-2 block text-sm font-bold text-white/68">السعر *</label>
+            <div className="mb-3 grid grid-cols-3 gap-2">
               {PRICE_OPTIONS.map(({ value, label }) => (
                 <button
                   key={value}
                   type="button"
                   onClick={() => handlePriceSelect(value)}
-                  className={`py-3 rounded-xl border font-black text-lg transition-all duration-200 active:scale-95
-                    ${selectedPrice === value
-                      ? 'bg-gold-500/20 border-gold-500/60 text-gold-400'
-                      : 'bg-white/3 border-white/10 text-white/50 hover:bg-white/8 hover:text-white'
-                    }`}
+                  className={`rounded-2xl border py-3 text-lg font-black transition-all duration-300 active:scale-95 ${
+                    selectedPrice === value
+                      ? 'border-neon-gold/50 bg-neon-gold/15 text-neon-gold shadow-lg shadow-neon-gold/10'
+                      : 'border-white/10 bg-white/5 text-white/55 hover:border-neon-cyan/25 hover:text-white'
+                  }`}
                 >
                   {label}
                 </button>
               ))}
             </div>
             <div className="relative">
-              <DollarSign className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <DollarSign className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
               <input
                 type="number"
-                className="input-field pr-10"
+                className="input-field pr-11"
                 placeholder="مبلغ آخر (اختياري)"
                 value={form.customPrice}
                 onChange={(e) => handleCustomPrice(e.target.value)}
@@ -201,7 +190,6 @@ export default function AddCustomerPage() {
             </div>
           </div>
 
-          {/* Buttons */}
           <div className="flex gap-3 pt-2">
             <button
               type="button"
@@ -214,12 +202,12 @@ export default function AddCustomerPage() {
               type="submit"
               disabled={loading}
               whileTap={{ scale: 0.98 }}
-              className="gold-btn flex-1 flex items-center justify-center gap-2"
+              className="gold-btn flex flex-1 items-center justify-center gap-2"
             >
               {loading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> جاري الإضافة...</>
+                <><Loader2 className="h-4 w-4 animate-spin" /> جاري الإضافة...</>
               ) : (
-                <><Plus className="w-4 h-4" /> إضافة للدور</>
+                <><Plus className="h-4 w-4" /> إضافة للدور</>
               )}
             </motion.button>
           </div>

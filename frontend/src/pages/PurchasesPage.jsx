@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CalendarDays, FileText, Hash, Loader2, Package, Plus, ShoppingBag, Trash2, DollarSign } from 'lucide-react';
+import { CalendarDays, FileText, Hash, Loader2, Package, Plus, ShoppingBag, Trash2, DollarSign, Receipt, Wallet } from 'lucide-react';
 import Modal from '../components/ui/Modal';
 import EmptyState from '../components/ui/EmptyState';
 import { SkeletonCard, SkeletonRow } from '../components/ui/Skeleton';
@@ -45,8 +45,9 @@ export default function PurchasesPage() {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on('purchaseAdded', () => fetchPurchases());
-    return () => socket.off('purchaseAdded');
+    const handlePurchaseAdded = () => fetchPurchases();
+    socket.on('purchaseAdded', handlePurchaseAdded);
+    return () => socket.off('purchaseAdded', handlePurchaseAdded);
   }, [socket, fetchPurchases]);
 
   const selectedTotal = purchases.reduce((sum, purchase) => sum + purchase.price, 0);
@@ -102,21 +103,22 @@ export default function PurchasesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-black text-white mb-1">المشتريات</h2>
-          <p className="text-white/30 text-sm">تتبع مصاريف صالون عبود حسب اليوم</p>
+          <p className="page-kicker mb-3">Expense Ledger</p>
+          <h2 className="page-title">المشتريات</h2>
+          <p className="page-subtitle">تتبع المصاريف اليومية وصافي الربح مع سجل عمليات واضح وسريع.</p>
         </div>
         <button onClick={() => setIsOpen(true)} className="gold-btn flex items-center gap-2">
-          <Plus className="w-4 h-4" />
+          <Plus className="h-4 w-4" />
           إضافة شراء
         </button>
       </div>
 
-      <div className="glass-card p-4 flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-2 text-white/60 font-semibold">
-          <CalendarDays className="w-4 h-4 text-gold-400" />
-          عرض مشتريات تاريخ
+      <div className="glass-card flex flex-wrap items-center gap-3 p-4">
+        <div className="flex items-center gap-2 font-bold text-white/64">
+          <CalendarDays className="h-4 w-4 text-neon-cyan" />
+          عرض تاريخ
         </div>
         <input
           type="date"
@@ -131,42 +133,50 @@ export default function PurchasesPage() {
         >
           اليوم
         </button>
-        <span className="text-white/30 text-sm">
+        <span className="text-sm text-white/34">
           {isToday ? 'تعرض مشتريات اليوم' : `تعرض مشتريات ${selectedDate}`}
         </span>
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {[...Array(4)].map((_, index) => <SkeletonCard key={index} />)}
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { label: 'مشتريات التاريخ المحدد', value: `${selectedTotal} ₪`, color: 'border-red-500/20 bg-red-500/5', text: 'text-red-400' },
-            { label: 'عدد المشتريات', value: purchases.length, color: 'border-blue-500/20 bg-blue-500/5', text: 'text-blue-400' },
-            { label: 'مشتريات اليوم', value: `${stats?.todayTotal || 0} ₪`, color: 'border-orange-500/20 bg-orange-500/5', text: 'text-orange-400' },
-            { label: 'صافي ربح اليوم', value: `${stats?.todayNetProfit || 0} ₪`, color: (stats?.todayNetProfit || 0) >= 0 ? 'border-green-500/20 bg-green-500/5' : 'border-red-500/20 bg-red-500/5', text: (stats?.todayNetProfit || 0) >= 0 ? 'text-green-400' : 'text-red-400' }
-          ].map(({ label, value, color, text }, index) => (
+            { label: 'مشتريات التاريخ المحدد', value: `${selectedTotal} ₪`, icon: Receipt, color: 'border-neon-danger/24 bg-neon-danger/10', text: 'text-neon-danger' },
+            { label: 'عدد المشتريات', value: purchases.length, icon: ShoppingBag, color: 'border-neon-cyan/24 bg-neon-cyan/10', text: 'text-neon-cyan' },
+            { label: 'مشتريات اليوم', value: `${stats?.todayTotal || 0} ₪`, icon: Package, color: 'border-neon-gold/24 bg-neon-gold/10', text: 'text-neon-gold' },
+            { label: 'صافي ربح اليوم', value: `${stats?.todayNetProfit || 0} ₪`, icon: Wallet, color: (stats?.todayNetProfit || 0) >= 0 ? 'border-neon-green/24 bg-neon-green/10' : 'border-neon-danger/24 bg-neon-danger/10', text: (stats?.todayNetProfit || 0) >= 0 ? 'text-neon-green' : 'text-neon-danger' }
+          ].map(({ label, value, icon: Icon, color, text }, index) => (
             <motion.div
               key={label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.08 }}
               whileHover={{ scale: 1.02, y: -2 }}
-              className={`glass-card border ${color} p-5 transition-all duration-300`}
+              className={`metric-panel border ${color} flex items-center gap-3 text-right`}
             >
-              <p className="text-white/40 text-sm mb-2">{label}</p>
-              <p className={`text-2xl font-black ${text}`}>{value}</p>
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-cyber-950/40">
+                <Icon className={`h-5 w-5 ${text}`} />
+              </div>
+              <div>
+                <p className="mb-1 text-xs font-black text-white/38">{label}</p>
+                <p className={`text-2xl font-black ${text}`}>{value}</p>
+              </div>
             </motion.div>
           ))}
         </div>
       )}
 
-      <div className="glass-card p-6">
-        <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
-          <h3 className="font-black text-white">سجل المشتريات</h3>
-          <span className="text-white/30 text-sm">{selectedDate}</span>
+      <div className="glass-card p-5 md:p-6">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 className="font-black text-white">سجل المشتريات</h3>
+            <p className="text-xs text-white/30">قائمة العمليات حسب التاريخ المحدد</p>
+          </div>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-bold text-white/38">{selectedDate}</span>
         </div>
 
         {loading ? (
@@ -190,25 +200,25 @@ export default function PurchasesPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
                   transition={{ delay: index * 0.03 }}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 group transition-colors"
+                  className="surface-row group flex flex-col gap-3 p-4 md:flex-row md:items-center"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0">
-                    <Package className="w-5 h-5 text-red-400" />
+                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-neon-danger/22 bg-neon-danger/10">
+                    <Package className="h-5 w-5 text-neon-danger" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-white truncate">{purchase.itemName}</p>
-                    <div className="flex items-center gap-3 text-xs text-white/30 mt-0.5">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-bold text-white">{purchase.itemName}</p>
+                    <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-white/30">
                       {purchase.quantity > 1 && <span>الكمية: {purchase.quantity}</span>}
                       {purchase.notes && <span className="truncate">{purchase.notes}</span>}
                       <span>{new Date(purchase.createdAt).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
                     </div>
                   </div>
-                  <span className="text-red-400 font-black text-lg">{purchase.price} ₪</span>
+                  <span className="text-lg font-black text-neon-danger">{purchase.price} ₪</span>
                   <button
                     onClick={() => handleDelete(purchase._id, purchase.itemName)}
-                    className="w-8 h-8 rounded-lg bg-red-500/5 border border-red-500/10 text-red-400/40 hover:text-red-400 hover:bg-red-500/15 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200"
+                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-neon-danger/15 bg-neon-danger/8 text-neon-danger/45 opacity-100 transition-all duration-300 hover:bg-neon-danger/15 hover:text-neon-danger md:opacity-0 md:group-hover:opacity-100"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 </motion.div>
               ))}
@@ -220,12 +230,12 @@ export default function PurchasesPage() {
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="إضافة شراء جديد">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-white/70 text-sm mb-2 font-semibold">اسم الصنف *</label>
+            <label className="mb-2 block text-sm font-bold text-white/68">اسم الصنف *</label>
             <div className="relative">
-              <Package className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <Package className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
               <input
                 type="text"
-                className="input-field pr-10"
+                className="input-field pr-11"
                 placeholder="مثال: شامبو، مستلزمات..."
                 value={form.itemName}
                 onChange={(event) => setForm({ ...form, itemName: event.target.value })}
@@ -237,12 +247,12 @@ export default function PurchasesPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-white/70 text-sm mb-2 font-semibold">الكمية</label>
+              <label className="mb-2 block text-sm font-bold text-white/68">الكمية</label>
               <div className="relative">
-                <Hash className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                <Hash className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
                 <input
                   type="number"
-                  className="input-field pr-10"
+                  className="input-field pr-11"
                   placeholder="1"
                   min="0"
                   step="0.5"
@@ -252,12 +262,12 @@ export default function PurchasesPage() {
               </div>
             </div>
             <div>
-              <label className="block text-white/70 text-sm mb-2 font-semibold">سعر القطعة *</label>
+              <label className="mb-2 block text-sm font-bold text-white/68">سعر القطعة *</label>
               <div className="relative">
-                <DollarSign className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                <DollarSign className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
                 <input
                   type="number"
-                  className="input-field pr-10"
+                  className="input-field pr-11"
                   placeholder="0 ₪"
                   min="0"
                   step="0.5"
@@ -269,17 +279,17 @@ export default function PurchasesPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-gold-500/20 bg-gold-500/10 p-4 flex items-center justify-between gap-3">
-            <span className="text-white/60 text-sm font-semibold">السعر النهائي</span>
-            <span className="text-gold-400 text-xl font-black">{finalPrice || 0} ₪</span>
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-neon-gold/22 bg-neon-gold/10 p-4">
+            <span className="text-sm font-bold text-white/60">السعر النهائي</span>
+            <span className="text-xl font-black text-neon-gold">{finalPrice || 0} ₪</span>
           </div>
 
           <div>
-            <label className="block text-white/70 text-sm mb-2 font-semibold">ملاحظات</label>
+            <label className="mb-2 block text-sm font-bold text-white/68">ملاحظات</label>
             <div className="relative">
-              <FileText className="absolute right-3 top-3 w-4 h-4 text-white/30" />
+              <FileText className="absolute right-4 top-3.5 h-4 w-4 text-white/30" />
               <textarea
-                className="input-field pr-10 resize-none"
+                className="input-field resize-none pr-11"
                 rows={2}
                 placeholder="ملاحظات إضافية..."
                 value={form.notes}
@@ -290,15 +300,15 @@ export default function PurchasesPage() {
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={() => setIsOpen(false)} className="ghost-btn flex-1">إلغاء</button>
-            <motion.button type="submit" disabled={submitting} whileTap={{ scale: 0.98 }} className="gold-btn flex-1 flex items-center justify-center gap-2">
+            <motion.button type="submit" disabled={submitting} whileTap={{ scale: 0.98 }} className="gold-btn flex flex-1 items-center justify-center gap-2">
               {submitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   جاري الحفظ...
                 </>
               ) : (
                 <>
-                  <Plus className="w-4 h-4" />
+                  <Plus className="h-4 w-4" />
                   حفظ
                 </>
               )}

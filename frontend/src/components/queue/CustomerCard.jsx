@@ -1,22 +1,23 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, DollarSign, Trash2 } from 'lucide-react';
+import { Clock, DollarSign, Trash2, Zap } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
 const STATUS_CONFIG = {
   waiting: {
     label: 'قيد الانتظار',
+    class: 'badge-waiting',
     next: 'ready',
     nextLabel: 'تأهيل',
-    nextColor: 'bg-green-500/10 border-green-500/20 text-green-400 hover:bg-green-500/20'
+    nextColor: 'border-neon-green/25 bg-neon-green/10 text-neon-green hover:bg-neon-green/16'
   },
   ready: {
     label: 'جاهز',
     class: 'badge-ready',
     next: 'done',
     nextLabel: 'إنهاء الخدمة',
-    nextColor: 'bg-gold-500/10 border-gold-500/20 text-gold-400 hover:bg-gold-500/20'
+    nextColor: 'border-neon-gold/25 bg-neon-gold/10 text-neon-gold hover:bg-neon-gold/16'
   },
   done: {
     label: 'انتهى',
@@ -63,11 +64,11 @@ function QueueProgress({ customer, queueAhead = 0 }) {
 
   return (
     <div className="queue-progress">
-      <p className="text-[11px] font-black text-cyan-200 leading-tight">
-        ضايل قدامك {queueAhead}
+      <p className="text-[11px] font-black leading-tight text-neon-cyan">
+        قبلك {queueAhead}
       </p>
-      <p className="text-[11px] font-bold text-emerald-300 leading-tight mt-0.5">
-        الوقت المتوقع {formatDuration(remainingSeconds)}
+      <p className="mt-0.5 text-[11px] font-bold leading-tight text-neon-green">
+        المتوقع {formatDuration(remainingSeconds)}
       </p>
     </div>
   );
@@ -113,10 +114,16 @@ export default function CustomerCard({ customer, index, queueAhead = 0, onUpdate
     }
   };
 
-  const borderColor = {
-    waiting: 'border-blue-500/20',
-    ready: 'border-green-500/30',
-    done: 'border-gray-500/10 opacity-60'
+  const statusStyle = {
+    waiting: 'border-neon-cyan/22',
+    ready: 'border-neon-green/28',
+    done: 'border-white/8 opacity-70'
+  };
+
+  const numberStyle = {
+    waiting: 'border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan',
+    ready: 'border-neon-green/30 bg-neon-green/10 text-neon-green',
+    done: 'border-white/10 bg-white/8 text-white/45'
   };
 
   return (
@@ -126,19 +133,18 @@ export default function CustomerCard({ customer, index, queueAhead = 0, onUpdate
       exit={{ opacity: 0, x: -20 }}
       transition={{ delay: index * 0.05, duration: 0.3 }}
       layout
-      className={`glass-card border ${borderColor[customer.status]} p-5 group hover:scale-[1.01] transition-all duration-300`}
+      className={`glass-card group overflow-hidden border ${statusStyle[customer.status]} p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-neon-cyan/35 md:p-5`}
     >
-      <div className="flex items-start gap-4">
-        <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 font-black text-lg
-          ${customer.status === 'waiting' ? 'bg-blue-500/10 border border-blue-500/30 text-blue-400' :
-            customer.status === 'ready' ? 'bg-green-500/10 border border-green-500/30 text-green-400' :
-            'bg-gray-500/10 border border-gray-500/20 text-gray-500'}`}>
+      <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-l from-transparent via-neon-cyan/45 to-transparent" />
+
+      <div className="flex flex-col gap-4 md:flex-row md:items-start">
+        <div className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border text-xl font-black shadow-lg shadow-black/20 ${numberStyle[customer.status]}`}>
           {customer.queueNumber}
         </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 flex-wrap">
-            <h3 className="font-black text-lg text-white truncate">{customer.name}</h3>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-3">
+            <h3 className="truncate text-xl font-black text-white">{customer.name}</h3>
             {customer.status === 'waiting' ? (
               <QueueProgress customer={customer} queueAhead={queueAhead} />
             ) : (
@@ -146,34 +152,35 @@ export default function CustomerCard({ customer, index, queueAhead = 0, onUpdate
             )}
           </div>
 
-          <div className="flex items-center gap-4 mt-2 flex-wrap">
-            <div className="flex items-center gap-1.5 text-gold-400 font-bold">
-              <DollarSign className="w-4 h-4" />
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-neon-gold/20 bg-neon-gold/10 px-3 py-1 text-sm font-black text-neon-gold">
+              <DollarSign className="h-4 w-4" />
               <span>{customer.price} ₪</span>
             </div>
-            <div className="flex items-center gap-1.5 text-white/40 text-sm">
-              <Clock className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/5 px-3 py-1 text-xs text-white/42">
+              <Clock className="h-3.5 w-3.5" />
               <span>دخل: {formatTime(customer.entryTime)}</span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex flex-shrink-0 items-center gap-2 md:justify-end">
           {config.next && (
             <button
               onClick={handleStatusChange}
               disabled={loading}
-              className={`px-4 py-2 rounded-xl border text-sm font-bold transition-all duration-200 active:scale-95 ${config.nextColor}`}
+              className={`inline-flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm font-black transition-all duration-300 hover:scale-[1.01] active:scale-95 disabled:opacity-60 ${config.nextColor}`}
             >
+              <Zap className="h-4 w-4" />
               {loading ? '...' : config.nextLabel}
             </button>
           )}
           {customer.status !== 'done' && (
             <button
               onClick={handleDelete}
-              className="w-9 h-9 rounded-xl border border-red-500/20 bg-red-500/5 text-red-400/50 hover:text-red-400 hover:bg-red-500/15 flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
+              className="flex h-10 w-10 items-center justify-center rounded-2xl border border-neon-danger/20 bg-neon-danger/8 text-neon-danger/55 opacity-100 transition-all duration-300 hover:bg-neon-danger/15 hover:text-neon-danger md:opacity-0 md:group-hover:opacity-100"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="h-4 w-4" />
             </button>
           )}
         </div>

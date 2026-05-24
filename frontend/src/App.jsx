@@ -21,28 +21,28 @@ export default function App() {
             toastOptions={{
               duration: 3500,
               style: {
-                background: 'rgba(15, 25, 35, 0.95)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'rgba(2, 6, 17, 0.86)',
+                backdropFilter: 'blur(24px)',
+                border: '1px solid rgba(0, 209, 255, 0.18)',
                 color: '#fff',
-                borderRadius: '14px',
+                borderRadius: '18px',
                 fontSize: '14px',
                 fontFamily: 'Cairo, sans-serif',
                 direction: 'rtl',
                 padding: '12px 16px',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+                boxShadow: '0 24px 70px rgba(0, 0, 0, 0.45)',
                 maxWidth: '360px',
               },
               success: {
-                iconTheme: { primary: '#f59e0b', secondary: '#0d1117' },
+                iconTheme: { primary: '#00FFA3', secondary: '#020611' },
                 style: {
-                  border: '1px solid rgba(245, 158, 11, 0.3)',
+                  border: '1px solid rgba(0, 255, 163, 0.28)',
                 }
               },
               error: {
-                iconTheme: { primary: '#ef4444', secondary: '#0d1117' },
+                iconTheme: { primary: '#FF4D6D', secondary: '#020611' },
                 style: {
-                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                  border: '1px solid rgba(255, 77, 109, 0.3)',
                 }
               },
             }}

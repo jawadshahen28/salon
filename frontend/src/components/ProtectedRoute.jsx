@@ -7,10 +7,10 @@ export default function ProtectedRoute() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <BarberLogo size="md" className="mx-auto mb-4" />
-          <p className="text-white/30 text-sm">جاري التحميل...</p>
+          <p className="text-sm font-bold text-white/40">جاري التحميل...</p>
         </div>
       </div>
     );

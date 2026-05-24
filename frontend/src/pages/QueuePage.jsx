@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import { Users, RotateCcw, Search, Plus } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Users, RotateCcw, Search, Plus, Timer, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import CustomerCard from '../components/queue/CustomerCard';
 import EmptyState from '../components/ui/EmptyState';
@@ -67,48 +67,60 @@ export default function QueuePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-black text-white mb-1">إدارة الدور</h2>
-          <p className="text-white/30 text-sm">{stats.total} زبون في الدور حالياً</p>
+          <p className="page-kicker mb-3">Live Queue</p>
+          <h2 className="page-title">إدارة الدور</h2>
+          <p className="page-subtitle">{stats.total} زبون في الدور حالياً مع تحديثات مباشرة للحالة والوقت.</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={fetchQueue}
-            className="w-10 h-10 glass-card border border-white/10 flex items-center justify-center text-white/50 hover:text-white transition-colors"
+            className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white/55 transition-all duration-300 hover:border-neon-cyan/35 hover:text-white"
             title="تحديث"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="h-4 w-4" />
           </button>
           <button
             onClick={() => navigate('/add-customer')}
             className="gold-btn flex items-center gap-2"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="h-4 w-4" />
             إضافة زبون
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         {[
-          { label: 'في الدور', value: stats.total, color: 'text-white', bg: 'bg-white/5 border-white/10' },
-          { label: 'انتظار', value: stats.waiting, color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20' },
-          { label: 'جاهز', value: stats.ready, color: 'text-green-400', bg: 'bg-green-500/10 border-green-500/20' }
-        ].map(({ label, value, color, bg }) => (
-          <div key={label} className={`glass-card border ${bg} p-4 text-center`}>
-            <p className={`text-2xl font-black ${color}`}>{value}</p>
-            <p className="text-white/40 text-xs mt-1">{label}</p>
-          </div>
+          { label: 'في الدور', value: stats.total, icon: Users, color: 'text-white', bg: 'border-white/10 bg-white/5' },
+          { label: 'انتظار', value: stats.waiting, icon: Timer, color: 'text-neon-cyan', bg: 'border-neon-cyan/22 bg-neon-cyan/10' },
+          { label: 'جاهز', value: stats.ready, icon: CheckCircle2, color: 'text-neon-green', bg: 'border-neon-green/22 bg-neon-green/10' }
+        ].map(({ label, value, icon: Icon, color, bg }, index) => (
+          <motion.div
+            key={label}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06 }}
+            className={`metric-panel border ${bg} flex items-center gap-3 text-right`}
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-cyber-950/40">
+              <Icon className={`h-5 w-5 ${color}`} />
+            </div>
+            <div>
+              <p className={`text-3xl font-black ${color}`}>{value}</p>
+              <p className="text-xs text-white/40">{label}</p>
+            </div>
+          </motion.div>
         ))}
       </div>
 
-      <div className="flex gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-48">
-          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+      <div className="glass-card flex flex-wrap gap-3 p-3">
+        <div className="relative min-w-48 flex-1">
+          <Search className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
           <input
             type="text"
-            className="input-field pr-10 py-2.5 text-sm"
+            className="input-field py-2.5 pr-11 text-sm"
             placeholder="بحث عن زبون..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -119,10 +131,10 @@ export default function QueuePage() {
             <button
               key={value}
               onClick={() => setFilter(value)}
-              className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
+              className={`rounded-2xl px-4 py-2.5 text-sm font-black transition-all duration-300 ${
                 filter === value
-                  ? 'bg-gold-500/20 border border-gold-500/40 text-gold-400'
-                  : 'glass-card border border-white/10 text-white/50 hover:text-white'
+                  ? 'border border-neon-cyan/35 bg-neon-cyan/12 text-neon-cyan shadow-lg shadow-neon-cyan/10'
+                  : 'border border-white/10 bg-white/5 text-white/50 hover:text-white'
               }`}
             >
               {label}

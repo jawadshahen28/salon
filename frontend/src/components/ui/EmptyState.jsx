@@ -5,13 +5,14 @@ export default function EmptyState({ icon: Icon, title, description, action }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-20 text-center"
+      className="glass-card flex flex-col items-center justify-center overflow-hidden px-6 py-16 text-center"
     >
-      <div className="w-24 h-24 rounded-2xl bg-gold-500/5 border border-gold-500/10 flex items-center justify-center mb-6">
-        <Icon className="w-12 h-12 text-gold-500/30" />
+      <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-l from-transparent via-neon-cyan/50 to-transparent" />
+      <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-[1.6rem] border border-neon-cyan/20 bg-neon-cyan/10 shadow-2xl shadow-neon-cyan/10">
+        <Icon className="h-12 w-12 text-neon-cyan/70" />
       </div>
-      <h3 className="text-xl font-black text-white/50 mb-2">{title}</h3>
-      <p className="text-white/25 text-sm max-w-xs mb-6">{description}</p>
+      <h3 className="mb-2 text-xl font-black text-white">{title}</h3>
+      <p className="mb-6 max-w-sm text-sm leading-7 text-white/38">{description}</p>
       {action && (
         <button onClick={action.onClick} className="gold-btn">
           {action.label}

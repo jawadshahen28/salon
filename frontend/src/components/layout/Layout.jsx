@@ -16,7 +16,8 @@ export default function Layout() {
   const title = pageTitles[location.pathname] || 'صالون عبود';
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="relative flex h-screen overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(108,92,255,0.08),transparent_34%,rgba(0,209,255,0.07))]" />
       <div className="hidden lg:flex">
         <Sidebar isOpen={true} onToggle={() => {}} />
       </div>
@@ -25,12 +26,12 @@ export default function Layout() {
         <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(false)} />
       </div>
 
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="relative z-10 flex flex-1 flex-col overflow-hidden">
         <Navbar
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
           title={title}
         />
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

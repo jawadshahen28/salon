@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   Users, TrendingUp, ShoppingBag, Wallet, Clock, CheckCircle,
-  BarChart3, Activity, Lock, Loader2
+  BarChart3, Activity, Lock, Loader2, ShieldCheck
 } from 'lucide-react';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, LineChart, Line
+  Tooltip, ResponsiveContainer
 } from 'recharts';
 import StatCard from '../components/ui/StatCard';
 import { SkeletonCard, SkeletonChart } from '../components/ui/Skeleton';
@@ -17,8 +17,8 @@ import toast from 'react-hot-toast';
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="glass-card border border-gold-500/20 p-3 text-sm">
-        <p className="text-white/60 mb-1">{label}</p>
+      <div className="glass-card border border-neon-cyan/20 p-3 text-sm">
+        <p className="mb-1 text-white/60">{label}</p>
         {payload.map((entry, i) => (
           <p key={i} style={{ color: entry.color }} className="font-bold">
             {entry.name}: {entry.value} ₪
@@ -105,18 +105,19 @@ export default function DashboardPage() {
 
   if (!isDashboardUnlocked) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center">
+      <div className="flex min-h-[72vh] items-center justify-center">
         <motion.form
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={handleDashboardUnlock}
-          className="glass-card p-8 w-full max-w-md text-center"
+          className="glass-card w-full max-w-md overflow-hidden p-8 text-center"
         >
-          <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
-            <Lock className="w-8 h-8 text-gold-400" />
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-[1.35rem] border border-neon-primary/25 bg-neon-primary/10 shadow-2xl shadow-neon-primary/15">
+            <Lock className="h-8 w-8 text-neon-cyan" />
           </div>
-          <h2 className="text-2xl font-black text-white mb-2">لوحة التحكم محمية</h2>
-          <p className="text-white/40 text-sm mb-6">أدخل كلمة السر لعرض إحصائيات صالون عبود</p>
+          <p className="page-kicker mx-auto mb-4 w-fit">Protected Analytics</p>
+          <h2 className="mb-2 text-2xl font-black text-white">لوحة التحكم محمية</h2>
+          <p className="mb-6 text-sm leading-7 text-white/42">أدخل كلمة السر لعرض إحصائيات صالون عبود</p>
 
           <input
             type="password"
@@ -131,15 +132,18 @@ export default function DashboardPage() {
           <button
             type="submit"
             disabled={checkingPassword}
-            className="gold-btn w-full flex items-center justify-center gap-2 mt-5"
+            className="gold-btn mt-5 flex w-full items-center justify-center gap-2"
           >
             {checkingPassword ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="h-5 w-5 animate-spin" />
                 جاري التحقق...
               </>
             ) : (
-              'دخول لوحة التحكم'
+              <>
+                <ShieldCheck className="h-5 w-5" />
+                دخول لوحة التحكم
+              </>
             )}
           </button>
         </motion.form>
@@ -150,10 +154,10 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {[...Array(8)].map((_, i) => <SkeletonCard key={i} />)}
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <SkeletonChart /><SkeletonChart />
         </div>
       </div>
@@ -162,45 +166,45 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h2 className="text-2xl font-black text-white mb-1">لوحة التحكم</h2>
-        <p className="text-white/30 text-sm">مرحباً بك! هذا ملخص أعمالك اليوم</p>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="page-kicker mb-3">Executive Overview</p>
+          <h2 className="page-title">لوحة التحكم</h2>
+          <p className="page-subtitle">ملخص حي لأداء الصالون، الدور، الإيرادات، والمصاريف اليومية.</p>
+        </div>
       </motion.div>
 
-      {/* Live stats row */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="glass-card border border-blue-500/20 p-4 flex items-center gap-3"
+          className="metric-panel flex items-center gap-3 text-right"
         >
-          <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
-            <Clock className="w-5 h-5 text-blue-400" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neon-cyan/25 bg-neon-cyan/10">
+            <Clock className="h-5 w-5 text-neon-cyan" />
           </div>
           <div>
-            <p className="text-white/40 text-xs">في الانتظار</p>
-            <p className="text-2xl font-black text-blue-400">{stats?.waitingCount || 0}</p>
+            <p className="text-xs font-black text-white/38">في الانتظار</p>
+            <p className="text-3xl font-black text-neon-cyan">{stats?.waitingCount || 0}</p>
           </div>
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.05 }}
-          className="glass-card border border-green-500/20 p-4 flex items-center gap-3"
+          className="metric-panel flex items-center gap-3 text-right"
         >
-          <div className="w-10 h-10 rounded-xl bg-green-500/15 border border-green-500/30 flex items-center justify-center">
-            <CheckCircle className="w-5 h-5 text-green-400" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neon-green/25 bg-neon-green/10">
+            <CheckCircle className="h-5 w-5 text-neon-green" />
           </div>
           <div>
-            <p className="text-white/40 text-xs">جاهز للخدمة</p>
-            <p className="text-2xl font-black text-green-400">{stats?.readyCount || 0}</p>
+            <p className="text-xs font-black text-white/38">جاهز للخدمة</p>
+            <p className="text-3xl font-black text-neon-green">{stats?.readyCount || 0}</p>
           </div>
         </motion.div>
       </div>
 
-      {/* Main stats grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard title="زبائن اليوم" value={stats?.todayCustomersCount || 0} subtitle="إجمالي الزبائن" icon={Users} color="blue" delay={0.1} />
         <StatCard title="زبائن الشهر" value={stats?.monthCustomersCount || 0} subtitle="هذا الشهر" icon={Users} color="purple" delay={0.15} />
         <StatCard title="أرباح اليوم" value={`${stats?.todayRevenue || 0} ₪`} subtitle="من الخدمات" icon={TrendingUp} color="gold" delay={0.2} />
@@ -211,70 +215,66 @@ export default function DashboardPage() {
         <StatCard title="صافي ربح الشهر" value={`${netProfitMonth} ₪`} subtitle="هذا الشهر" icon={Wallet} color={netProfitMonth >= 0 ? 'green' : 'red'} delay={0.45} />
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Daily chart */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           className="glass-card p-6"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-9 h-9 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
-              <Activity className="w-4 h-4 text-gold-400" />
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-neon-gold/25 bg-neon-gold/10">
+              <Activity className="h-4 w-4 text-neon-gold" />
             </div>
             <div>
               <h3 className="font-black text-white">الأرباح اليومية</h3>
-              <p className="text-white/30 text-xs">آخر 7 أيام</p>
+              <p className="text-xs text-white/30">آخر 7 أيام</p>
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={200}>
+          <ResponsiveContainer width="100%" height={220}>
             <AreaChart data={stats?.dailyChart || []}>
               <defs>
                 <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#FFB800" stopOpacity={0.36}/>
+                  <stop offset="95%" stopColor="#FFB800" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-              <XAxis dataKey="day" stroke="rgba(255,255,255,0.2)" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} />
-              <YAxis stroke="rgba(255,255,255,0.2)" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+              <XAxis dataKey="day" stroke="rgba(255,255,255,0.22)" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
+              <YAxis stroke="rgba(255,255,255,0.22)" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
               <Tooltip content={<CustomTooltip />} />
-              <Area type="monotone" dataKey="revenue" name="الأرباح" stroke="#f59e0b" fill="url(#goldGrad)" strokeWidth={2} dot={{ fill: '#f59e0b', r: 4 }} />
+              <Area type="monotone" dataKey="revenue" name="الأرباح" stroke="#FFB800" fill="url(#goldGrad)" strokeWidth={3} dot={{ fill: '#FFB800', r: 4 }} />
             </AreaChart>
           </ResponsiveContainer>
         </motion.div>
 
-        {/* Monthly chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55 }}
           className="glass-card p-6"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-              <BarChart3 className="w-4 h-4 text-blue-400" />
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-neon-cyan/25 bg-neon-cyan/10">
+              <BarChart3 className="h-4 w-4 text-neon-cyan" />
             </div>
             <div>
               <h3 className="font-black text-white">الأرباح الشهرية</h3>
-              <p className="text-white/30 text-xs">آخر 6 أشهر</p>
+              <p className="text-xs text-white/30">آخر 6 أشهر</p>
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={200}>
+          <ResponsiveContainer width="100%" height={220}>
             <BarChart data={stats?.monthlyChart || []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-              <XAxis dataKey="label" stroke="rgba(255,255,255,0.2)" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} />
-              <YAxis stroke="rgba(255,255,255,0.2)" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+              <XAxis dataKey="label" stroke="rgba(255,255,255,0.22)" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
+              <YAxis stroke="rgba(255,255,255,0.22)" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="revenue" name="الأرباح" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="revenue" name="الأرباح" fill="#00D1FF" radius={[10, 10, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
       </div>
 
-      {/* Recent customers */}
       {stats?.recentCustomers?.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -282,7 +282,7 @@ export default function DashboardPage() {
           transition={{ delay: 0.6 }}
           className="glass-card p-6"
         >
-          <h3 className="font-black text-white mb-4">آخر الزبائن</h3>
+          <h3 className="mb-4 font-black text-white">آخر الزبائن</h3>
           <div className="space-y-3">
             {stats.recentCustomers.map((c, i) => (
               <motion.div
@@ -290,21 +290,21 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-4 p-3 rounded-xl bg-white/3 hover:bg-white/5 transition-colors"
+                className="surface-row flex items-center gap-4 p-3"
               >
-                <div className="w-9 h-9 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center font-black text-gold-400">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-neon-gold/25 bg-neon-gold/10 font-black text-neon-gold">
                   {c.queueNumber}
                 </div>
-                <div className="flex-1">
-                  <p className="font-bold text-white text-sm">{c.name}</p>
-                  <p className="text-white/30 text-xs">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-bold text-white">{c.name}</p>
+                  <p className="text-xs text-white/30">
                     {new Date(c.createdAt).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', hour12: true })}
                   </p>
                 </div>
-                <span className={`text-sm font-bold ${c.status === 'done' ? 'text-green-400' : c.status === 'ready' ? 'text-blue-400' : 'text-white/50'}`}>
+                <span className={`text-sm font-black ${c.status === 'done' ? 'text-neon-green' : c.status === 'ready' ? 'text-neon-cyan' : 'text-white/55'}`}>
                   {c.price} ₪
                 </span>
-                <span className={`text-xs px-2 py-1 rounded-lg ${c.status === 'done' ? 'badge-done' : c.status === 'ready' ? 'badge-ready' : 'badge-waiting'}`}>
+                <span className={`text-xs ${c.status === 'done' ? 'badge-done' : c.status === 'ready' ? 'badge-ready' : 'badge-waiting'}`}>
                   {c.status === 'done' ? 'انتهى' : c.status === 'ready' ? 'جاهز' : 'انتظار'}
                 </span>
               </motion.div>

@@ -36,7 +36,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/70 backdrop-blur-md"
+            className="absolute inset-0 bg-cyber-950/82 backdrop-blur-xl"
             onClick={onClose}
           />
 
@@ -46,19 +46,18 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', damping: 25, stiffness: 400 }}
-            className={`relative w-full ${sizes[size]} glass-card border border-white/10 overflow-hidden`}
+            className={`relative w-full ${sizes[size]} glass-card overflow-hidden border border-neon-cyan/18 shadow-2xl shadow-neon-primary/12`}
           >
-            {/* Gold accent line */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/60 to-transparent" />
+            <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-cyan/70 to-transparent" />
 
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/5">
-              <h3 className="text-lg font-black text-white">{title}</h3>
+            <div className="flex items-center justify-between border-b border-white/8 p-6">
+              <h3 className="text-lg font-black text-gradient-cyber">{title}</h3>
               <button
                 onClick={onClose}
-                className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white transition-all"
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/50 transition-all duration-300 hover:border-neon-danger/35 hover:bg-neon-danger/10 hover:text-white"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
