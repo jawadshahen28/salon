@@ -21,21 +21,43 @@ await connectDB();
 const app = express();
 const server = createServer(app);
 
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:4173', 'http://localhost:3000'];
+const localOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:4173',
+  'http://127.0.0.1:4173',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+];
+
+const productionOrigins = [
+  process.env.FRONTEND_URL,
+  'https://salon-abood.onrender.com'
+].filter(Boolean);
+
+const allowedOrigins = process.env.NODE_ENV === 'production' ? productionOrigins : localOrigins;
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+};
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' ? false : allowedOrigins,
+    origin: allowedOrigins,
     methods: ['GET', 'POST']
   }
 });
 
 app.set('io', io);
 
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? false : allowedOrigins,
-  credentials: true
-}));
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -46,6 +68,15 @@ app.use('/api/purchases', purchaseRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running normally' });
 });
+
+if (process.env.NODE_ENV === 'production') {
+  const frontendDistPath = path.join(__dirname, '..', 'frontend', 'dist');
+
+  app.use(express.static(frontendDistPath));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+}
 
 io.on('connection', (socket) => {
   console.log(`Socket connected: ${socket.id}`);
