@@ -12,7 +12,9 @@ const connectDB = async () => {
       throw new Error('Local MongoDB connection is not allowed. Use MongoDB Atlas in MONGODB_URI.');
     }
 
-    const conn = await mongoose.connect(mongoUri);
+    const conn = await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 10000
+    });
     console.log(`MongoDB Atlas connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`MongoDB connection error: ${error.message}`);

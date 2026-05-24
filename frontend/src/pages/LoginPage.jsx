@@ -22,7 +22,10 @@ export default function LoginPage() {
       toast.success('تم تسجيل الدخول بنجاح');
       navigate('/');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'بيانات الدخول غير صحيحة');
+      const message = err.response
+        ? err.response.data?.message || 'بيانات الدخول غير صحيحة'
+        : 'تعذر الاتصال بالسيرفر. تأكد أن الباكند يعمل على المنفذ 5003';
+      toast.error(message);
     } finally {
       setLoading(false);
     }
