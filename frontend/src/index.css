@@ -227,8 +227,25 @@
   body,
   #root {
     height: auto !important;
+    min-height: auto !important;
     overflow: visible !important;
     background: #ffffff !important;
+  }
+
+  #root,
+  #root > div,
+  #root > div > div,
+  #root main,
+  .daily-report-page {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: #ffffff !important;
+  }
+
+  #root *,
+  #root main {
+    overflow: visible !important;
   }
 
   body::before,
@@ -239,19 +256,24 @@
   body * {
     box-shadow: none !important;
     text-shadow: none !important;
-    visibility: hidden !important;
   }
 
-  .print-report,
-  .print-report * {
-    visibility: visible !important;
+  header,
+  aside,
+  .screen-report,
+  .pointer-events-none {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
   }
 
   .print-report {
     display: block !important;
-    position: absolute;
-    inset: 0;
-    width: 100%;
+    position: static !important;
+    width: auto;
+    min-height: auto;
     direction: rtl;
     color: #111827;
     background: #ffffff;
@@ -310,7 +332,8 @@
   }
 
   .print-report__section {
-    break-inside: avoid;
+    break-inside: auto;
+    page-break-inside: auto;
     margin-top: 18px;
   }
 
@@ -324,6 +347,21 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .print-report thead {
+    display: table-header-group;
+  }
+
+  .print-report tfoot {
+    display: table-footer-group;
+  }
+
+  .print-report tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .print-report th,

@@ -44,6 +44,208 @@ const formatTime = (date) => {
   });
 };
 
+const escapeHtml = (value) => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#039;');
+
+const buildPrintDocument = ({ date, summary, customers, purchases }) => {
+  const customerRows = customers.length === 0
+    ? '<tr><td colspan="5">لا يوجد زبائن منتهين في هذا التاريخ</td></tr>'
+    : customers.map((customer, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${escapeHtml(customer.name)}</td>
+        <td>${escapeHtml(customer.queueNumber)}</td>
+        <td>${escapeHtml(formatTime(customer.endTime || customer.updatedAt))}</td>
+        <td>${escapeHtml(formatMoney(customer.price))}</td>
+      </tr>
+    `).join('');
+
+  const purchaseRows = purchases.length === 0
+    ? '<tr><td colspan="5">لا توجد مشتريات في هذا التاريخ</td></tr>'
+    : purchases.map((purchase, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${escapeHtml(purchase.itemName)}</td>
+        <td>${escapeHtml(purchase.quantity || 1)}</td>
+        <td>${escapeHtml(purchase.notes || '-')}</td>
+        <td>${escapeHtml(formatMoney(purchase.price))}</td>
+      </tr>
+    `).join('');
+
+  return `<!doctype html>
+    <html lang="ar" dir="rtl">
+      <head>
+        <meta charset="utf-8" />
+        <title>التقرير اليومي - ${escapeHtml(date)}</title>
+        <style>
+          @page {
+            size: A4 portrait;
+            margin: 12mm;
+          }
+
+          * {
+            box-sizing: border-box;
+          }
+
+          html,
+          body {
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            color: #111827;
+            background: #ffffff;
+            font-family: Arial, "Tahoma", sans-serif;
+            font-size: 12px;
+            line-height: 1.6;
+          }
+
+          .header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            border-bottom: 2px solid #111827;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+          }
+
+          h1 {
+            margin: 0 0 4px;
+            font-size: 28px;
+            font-weight: 900;
+          }
+
+          .date,
+          .brand {
+            color: #4b5563;
+            font-size: 14px;
+            font-weight: 800;
+          }
+
+          .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+          }
+
+          .summary div {
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 10px;
+          }
+
+          .summary span {
+            display: block;
+            color: #6b7280;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 4px;
+          }
+
+          .summary strong {
+            color: #111827;
+            font-size: 18px;
+            font-weight: 900;
+          }
+
+          section {
+            margin-top: 18px;
+            break-inside: auto;
+            page-break-inside: auto;
+          }
+
+          h2 {
+            margin: 0 0 8px;
+            font-size: 17px;
+            font-weight: 900;
+          }
+
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            break-inside: auto;
+            page-break-inside: auto;
+          }
+
+          thead {
+            display: table-header-group;
+          }
+
+          tr {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+
+          th,
+          td {
+            border: 1px solid #d1d5db;
+            padding: 8px;
+            text-align: right;
+            vertical-align: top;
+          }
+
+          th {
+            background: #f3f4f6;
+            font-weight: 900;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <h1>التقرير اليومي</h1>
+            <div class="date">${escapeHtml(formatDate(date))}</div>
+          </div>
+          <div class="brand">صالون عبود</div>
+        </div>
+
+        <div class="summary">
+          <div><span>عدد الزبائن</span><strong>${escapeHtml(summary.customersCount)}</strong></div>
+          <div><span>إجمالي الربح</span><strong>${escapeHtml(formatMoney(summary.revenue))}</strong></div>
+          <div><span>المشتريات</span><strong>${escapeHtml(formatMoney(summary.purchasesTotal))}</strong></div>
+          <div><span>الصافي</span><strong>${escapeHtml(formatMoney(summary.netProfit))}</strong></div>
+        </div>
+
+        <section>
+          <h2>أسماء الزبائن المنتهين</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>الاسم</th>
+                <th>رقم الدور</th>
+                <th>الوقت</th>
+                <th>المبلغ</th>
+              </tr>
+            </thead>
+            <tbody>${customerRows}</tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>مشتريات اليوم</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>الصنف</th>
+                <th>الكمية</th>
+                <th>ملاحظات</th>
+                <th>المبلغ</th>
+              </tr>
+            </thead>
+            <tbody>${purchaseRows}</tbody>
+          </table>
+        </section>
+      </body>
+    </html>`;
+};
+
 export default function DailyReportPage() {
   const today = getLocalDate();
   const [selectedDate, setSelectedDate] = useState(today);
@@ -87,7 +289,50 @@ export default function DailyReportPage() {
   };
 
   const handlePrint = () => {
-    window.print();
+    if (loading) return;
+
+    const previousFrame = document.getElementById('daily-report-print-frame');
+    previousFrame?.remove();
+
+    const printFrame = document.createElement('iframe');
+    printFrame.id = 'daily-report-print-frame';
+    printFrame.title = 'daily-report-print';
+    printFrame.style.position = 'fixed';
+    printFrame.style.left = '0';
+    printFrame.style.bottom = '0';
+    printFrame.style.width = '0';
+    printFrame.style.height = '0';
+    printFrame.style.border = '0';
+    printFrame.style.opacity = '0';
+
+    document.body.appendChild(printFrame);
+
+    const printWindow = printFrame.contentWindow;
+    const printDocument = printWindow?.document;
+
+    if (!printWindow || !printDocument) {
+      window.print();
+      return;
+    }
+
+    printDocument.open();
+    printDocument.write(buildPrintDocument({
+      date: selectedDate,
+      summary,
+      customers,
+      purchases
+    }));
+    printDocument.close();
+
+    printWindow.onafterprint = () => {
+      printFrame.remove();
+    };
+
+    setTimeout(() => {
+      printWindow.focus();
+      printWindow.print();
+      setTimeout(() => printFrame.remove(), 60000);
+    }, 250);
   };
 
   const customers = report?.customers || [];
@@ -102,7 +347,8 @@ export default function DailyReportPage() {
   const isToday = selectedDate === today;
 
   return (
-    <div className="space-y-6">
+    <div className="daily-report-page">
+      <div className="screen-report space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="page-title">التقرير اليومي</h2>
@@ -259,6 +505,7 @@ export default function DailyReportPage() {
           </div>
         </>
       )}
+      </div>
 
       <section className="print-report">
         <div className="print-report__header">
