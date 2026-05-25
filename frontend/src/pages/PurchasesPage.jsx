@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CalendarDays, FileText, Hash, Loader2, Package, Plus, ShoppingBag, Trash2, DollarSign, Receipt, Wallet } from 'lucide-react';
+import { CalendarDays, FileText, Hash, Loader2, Lock, Package, Plus, ShieldCheck, ShoppingBag, Trash2, DollarSign, Receipt, Wallet } from 'lucide-react';
 import Modal from '../components/ui/Modal';
 import EmptyState from '../components/ui/EmptyState';
 import { SkeletonCard, SkeletonRow } from '../components/ui/Skeleton';
@@ -17,6 +17,9 @@ const getLocalDate = () => {
 };
 
 export default function PurchasesPage() {
+  const [isPurchasesUnlocked, setIsPurchasesUnlocked] = useState(false);
+  const [purchasesPassword, setPurchasesPassword] = useState('');
+  const [checkingPassword, setCheckingPassword] = useState(false);
   const [purchases, setPurchases] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,7 +29,24 @@ export default function PurchasesPage() {
   const [form, setForm] = useState({ itemName: '', quantity: '', price: '', notes: '' });
   const { socket } = useSocket();
 
+  const handlePurchasesUnlock = async (e) => {
+    e.preventDefault();
+    setCheckingPassword(true);
+
+    try {
+      await api.post('/auth/verify-dashboard', { password: purchasesPassword });
+      setIsPurchasesUnlocked(true);
+      setPurchasesPassword('');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'كلمة السر غير صحيحة');
+    } finally {
+      setCheckingPassword(false);
+    }
+  };
+
   const fetchPurchases = useCallback(async (date = selectedDate) => {
+    if (!isPurchasesUnlocked) return;
+
     try {
       setLoading(true);
       const res = await api.get('/purchases', { params: { date } });
@@ -37,18 +57,20 @@ export default function PurchasesPage() {
     } finally {
       setLoading(false);
     }
-  }, [selectedDate]);
+  }, [isPurchasesUnlocked, selectedDate]);
 
   useEffect(() => {
-    fetchPurchases();
-  }, [fetchPurchases]);
+    if (isPurchasesUnlocked) {
+      fetchPurchases();
+    }
+  }, [fetchPurchases, isPurchasesUnlocked]);
 
   useEffect(() => {
-    if (!socket) return;
+    if (!socket || !isPurchasesUnlocked) return;
     const handlePurchaseAdded = () => fetchPurchases();
     socket.on('purchaseAdded', handlePurchaseAdded);
     return () => socket.off('purchaseAdded', handlePurchaseAdded);
-  }, [socket, fetchPurchases]);
+  }, [socket, fetchPurchases, isPurchasesUnlocked]);
 
   const selectedTotal = purchases.reduce((sum, purchase) => sum + purchase.price, 0);
   const today = getLocalDate();
@@ -100,6 +122,53 @@ export default function PurchasesPage() {
       toast.error('حدث خطأ في الحذف');
     }
   };
+
+  if (!isPurchasesUnlocked) {
+    return (
+      <div className="flex min-h-[72vh] items-center justify-center">
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          onSubmit={handlePurchasesUnlock}
+          className="glass-card w-full max-w-md overflow-hidden p-8 text-center"
+        >
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-[1.35rem] border border-neon-primary/25 bg-neon-primary/10 shadow-2xl shadow-neon-primary/15">
+            <Lock className="h-8 w-8 text-neon-cyan" />
+          </div>
+          <h2 className="mb-2 text-2xl font-black text-white">صفحة المشتريات محمية</h2>
+          <p className="mb-6 text-sm leading-7 text-white/42">أدخل كلمة سر لوحة التحكم لعرض المشتريات اليومية</p>
+
+          <input
+            type="password"
+            className="input-field text-center"
+            placeholder="كلمة السر"
+            value={purchasesPassword}
+            onChange={(event) => setPurchasesPassword(event.target.value)}
+            autoFocus
+            required
+          />
+
+          <button
+            type="submit"
+            disabled={checkingPassword}
+            className="gold-btn mt-5 flex w-full items-center justify-center gap-2"
+          >
+            {checkingPassword ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                جاري التحقق...
+              </>
+            ) : (
+              <>
+                <ShieldCheck className="h-5 w-5" />
+                دخول صفحة المشتريات
+              </>
+            )}
+          </button>
+        </motion.form>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
