@@ -7,7 +7,8 @@ const pageTitles = {
   '/': 'لوحة التحكم',
   '/queue': 'إدارة الدور',
   '/add-customer': 'إضافة زبون',
-  '/purchases': 'المشتريات'
+  '/purchases': 'المشتريات',
+  '/daily-report': 'التقرير اليومي'
 };
 
 export default function Layout() {

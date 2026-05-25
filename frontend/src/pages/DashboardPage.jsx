@@ -115,7 +115,6 @@ export default function DashboardPage() {
           <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-[1.35rem] border border-neon-primary/25 bg-neon-primary/10 shadow-2xl shadow-neon-primary/15">
             <Lock className="h-8 w-8 text-neon-cyan" />
           </div>
-          <p className="page-kicker mx-auto mb-4 w-fit">Protected Analytics</p>
           <h2 className="mb-2 text-2xl font-black text-white">لوحة التحكم محمية</h2>
           <p className="mb-6 text-sm leading-7 text-white/42">أدخل كلمة السر لعرض إحصائيات صالون عبود</p>
 
@@ -168,7 +167,6 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="page-kicker mb-3">Executive Overview</p>
           <h2 className="page-title">لوحة التحكم</h2>
           <p className="page-subtitle">ملخص حي لأداء الصالون، الدور، الإيرادات، والمصاريف اليومية.</p>
         </div>

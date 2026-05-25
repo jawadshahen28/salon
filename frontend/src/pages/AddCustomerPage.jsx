@@ -80,7 +80,6 @@ export default function AddCustomerPage() {
         <div className="mb-5 flex items-center justify-center gap-3">
           <BarberLogo size="sm" />
           <div className="text-right">
-            <p className="page-kicker mb-2 w-fit">Queue Intake</p>
             <h2 className="page-title text-gradient-cyber">إضافة زبون جديد</h2>
           </div>
         </div>

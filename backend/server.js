@@ -9,6 +9,7 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
 import customerRoutes from './routes/customers.js';
 import purchaseRoutes from './routes/purchases.js';
+import reportRoutes from './routes/reports.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -64,6 +65,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/purchases', purchaseRoutes);
+app.use('/api/reports', reportRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running normally' });

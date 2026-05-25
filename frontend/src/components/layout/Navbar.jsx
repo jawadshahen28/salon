@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Bell, Clock, Menu, Wifi } from 'lucide-react';
+import { Clock, Menu, Wifi } from 'lucide-react';
+import BarberPoleLogo from '../ui/BarberPoleLogo';
 
 export default function Navbar({ onToggleSidebar, title }) {
   const [time, setTime] = useState(new Date());
@@ -42,7 +43,6 @@ export default function Navbar({ onToggleSidebar, title }) {
       </button>
 
       <div className="hidden lg:block">
-        <p className="page-kicker mb-1">Live Command Center</p>
         <h1 className="text-xl font-black text-white">{title}</h1>
       </div>
 
@@ -56,12 +56,15 @@ export default function Navbar({ onToggleSidebar, title }) {
           <span>{formatDate(time)}</span>
         </div>
 
-        <button
+        <motion.button
           type="button"
-          className="hidden h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/45 transition-all duration-300 hover:border-neon-primary/30 hover:bg-neon-primary/10 hover:text-white sm:flex"
+          aria-label="شعار الحلاقين"
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.96 }}
+          className="hidden h-12 w-10 items-center justify-center rounded-xl sm:flex"
         >
-          <Bell className="h-4 w-4" />
-        </button>
+          <BarberPoleLogo />
+        </motion.button>
 
         <div className="flex items-center gap-1.5 rounded-xl border border-neon-green/25 bg-neon-green/10 px-3 py-2">
           <Wifi className="h-3.5 w-3.5 text-neon-green" />

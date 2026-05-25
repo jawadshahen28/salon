@@ -105,7 +105,6 @@ export default function PurchasesPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="page-kicker mb-3">Expense Ledger</p>
           <h2 className="page-title">المشتريات</h2>
           <p className="page-subtitle">تتبع المصاريف اليومية وصافي الربح مع سجل عمليات واضح وسريع.</p>
         </div>

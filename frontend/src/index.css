@@ -214,6 +214,133 @@
   100% { background-position: 200% 0; }
 }
 
+.print-report {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  html,
+  body,
+  #root {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  body * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    visibility: hidden !important;
+  }
+
+  .print-report,
+  .print-report * {
+    visibility: visible !important;
+  }
+
+  .print-report {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    direction: rtl;
+    color: #111827;
+    background: #ffffff;
+    font-family: 'Cairo', 'Noto Sans Arabic', sans-serif;
+  }
+
+  .print-report__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 2px solid #111827;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+
+  .print-report__header h1 {
+    margin: 0 0 4px;
+    font-size: 28px;
+    font-weight: 900;
+  }
+
+  .print-report__header p,
+  .print-report__brand {
+    margin: 0;
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .print-report__summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .print-report__summary div {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .print-report__summary span {
+    display: block;
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .print-report__summary strong {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  .print-report__section {
+    break-inside: avoid;
+    margin-top: 18px;
+  }
+
+  .print-report__section h2 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 900;
+  }
+
+  .print-report table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .print-report th,
+  .print-report td {
+    border: 1px solid #d1d5db;
+    padding: 8px;
+    text-align: right;
+    vertical-align: top;
+  }
+
+  .print-report th {
+    background: #f3f4f6;
+    color: #111827;
+    font-weight: 900;
+  }
+}
+
 @layer utilities {
   .text-gradient-gold {
     @apply bg-gradient-to-l from-neon-gold via-gold-300 to-neon-green bg-clip-text text-transparent;

@@ -9,6 +9,7 @@ import DashboardPage from './pages/DashboardPage';
 import QueuePage from './pages/QueuePage';
 import AddCustomerPage from './pages/AddCustomerPage';
 import PurchasesPage from './pages/PurchasesPage';
+import DailyReportPage from './pages/DailyReportPage';
 
 export default function App() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
                 <Route path="/queue" element={<QueuePage />} />
                 <Route path="/add-customer" element={<AddCustomerPage />} />
                 <Route path="/purchases" element={<PurchasesPage />} />
+                <Route path="/daily-report" element={<DailyReportPage />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,8 +1,8 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, Users, ShoppingBag, LogOut,
-  X, ChevronLeft, Sparkles
+  FileText, LayoutDashboard, Users, ShoppingBag, LogOut,
+  X, ChevronLeft
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import BarberLogo from '../ui/BarberLogo';
@@ -12,7 +12,8 @@ const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'لوحة التحكم' },
   { to: '/queue', icon: Users, label: 'إدارة الدور' },
   { to: '/add-customer', icon: Users, label: 'إضافة زبون' },
-  { to: '/purchases', icon: ShoppingBag, label: 'المشتريات' }
+  { to: '/purchases', icon: ShoppingBag, label: 'المشتريات' },
+  { to: '/daily-report', icon: FileText, label: 'التقرير اليومي' }
 ];
 
 export default function Sidebar({ isOpen, onToggle }) {
@@ -72,13 +73,6 @@ export default function Sidebar({ isOpen, onToggle }) {
             </button>
           </div>
 
-          <div className="mt-6 rounded-2xl border border-neon-primary/20 bg-neon-primary/10 p-4 shadow-lg shadow-neon-primary/10">
-            <div className="mb-2 flex items-center gap-2 text-neon-cyan">
-              <Sparkles className="h-4 w-4" />
-              <span className="text-xs font-black uppercase">Premium Suite</span>
-            </div>
-            <p className="text-xs leading-6 text-white/42">لوحة تشغيل مباشرة لإدارة الدور والمبيعات اليومية.</p>
-          </div>
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto p-4">

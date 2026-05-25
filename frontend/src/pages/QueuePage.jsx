@@ -69,7 +69,6 @@ export default function QueuePage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="page-kicker mb-3">Live Queue</p>
           <h2 className="page-title">إدارة الدور</h2>
           <p className="page-subtitle">{stats.total} زبون في الدور حالياً مع تحديثات مباشرة للحالة والوقت.</p>
         </div>
