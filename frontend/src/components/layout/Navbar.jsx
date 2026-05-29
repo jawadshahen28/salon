@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, Menu, Wifi } from 'lucide-react';
+import { Clock, Menu, Moon, Sun, Wifi } from 'lucide-react';
 import BarberPoleLogo from '../ui/BarberPoleLogo';
 
-export default function Navbar({ onToggleSidebar, title }) {
+export default function Navbar({ onToggleSidebar, title, theme, onToggleTheme }) {
   const [time, setTime] = useState(new Date());
+  const isLight = theme === 'light';
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
@@ -33,7 +34,7 @@ export default function Navbar({ onToggleSidebar, title }) {
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="sticky top-0 z-20 flex min-h-16 items-center gap-4 border-b border-white/8 bg-cyber-950/70 px-4 backdrop-blur-2xl md:px-6"
+      className="theme-navbar sticky top-0 z-20 flex min-h-16 items-center gap-4 border-b border-white/8 bg-cyber-950/70 px-4 backdrop-blur-2xl md:px-6"
     >
       <button
         onClick={onToggleSidebar}
@@ -55,6 +56,18 @@ export default function Navbar({ onToggleSidebar, title }) {
         <div className="hidden items-center gap-2 text-xs text-white/40 xl:flex">
           <span>{formatDate(time)}</span>
         </div>
+
+        <motion.button
+          type="button"
+          aria-label={isLight ? 'تفعيل الوضع الليلي' : 'تفعيل الوضع النهاري'}
+          title={isLight ? 'تفعيل الوضع الليلي' : 'تفعيل الوضع النهاري'}
+          onClick={onToggleTheme}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="theme-toggle-button flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/60 transition-all duration-300 hover:border-neon-cyan/35 hover:text-white"
+        >
+          {isLight ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+        </motion.button>
 
         <motion.button
           type="button"

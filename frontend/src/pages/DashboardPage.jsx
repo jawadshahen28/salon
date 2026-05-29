@@ -237,9 +237,9 @@ export default function DashboardPage() {
                   <stop offset="95%" stopColor="#FFB800" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-              <XAxis dataKey="day" stroke="rgba(255,255,255,0.22)" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
-              <YAxis stroke="rgba(255,255,255,0.22)" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
+              <XAxis dataKey="day" stroke="var(--chart-axis)" tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} />
+              <YAxis stroke="var(--chart-axis)" tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} />
               <Tooltip content={<CustomTooltip />} />
               <Area type="monotone" dataKey="revenue" name="الأرباح" stroke="#FFB800" fill="url(#goldGrad)" strokeWidth={3} dot={{ fill: '#FFB800', r: 4 }} />
             </AreaChart>
@@ -263,9 +263,9 @@ export default function DashboardPage() {
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={stats?.monthlyChart || []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-              <XAxis dataKey="label" stroke="rgba(255,255,255,0.22)" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
-              <YAxis stroke="rgba(255,255,255,0.22)" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
+              <XAxis dataKey="label" stroke="var(--chart-axis)" tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} />
+              <YAxis stroke="var(--chart-axis)" tick={{ fill: 'var(--chart-tick)', fontSize: 11 }} />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="revenue" name="الأرباح" fill="#00D1FF" radius={[10, 10, 0, 0]} />
             </BarChart>

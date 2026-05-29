@@ -44,7 +44,7 @@ export default function Sidebar({ isOpen, onToggle }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-30 bg-cyber-950/75 backdrop-blur-xl lg:hidden"
+            className="theme-mobile-overlay fixed inset-0 z-30 bg-cyber-950/75 backdrop-blur-xl lg:hidden"
             onClick={onToggle}
           />
         )}
@@ -54,7 +54,7 @@ export default function Sidebar({ isOpen, onToggle }) {
         initial={false}
         animate={{ x: isOpen ? 0 : '100%' }}
         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        className="fixed right-0 top-0 z-40 flex h-full w-72 flex-col border-l border-white/8 bg-cyber-950/72 backdrop-blur-2xl lg:relative lg:translate-x-0 lg:flex"
+        className="theme-sidebar fixed right-0 top-0 z-40 flex h-full w-72 flex-col border-l border-white/8 bg-cyber-950/72 backdrop-blur-2xl lg:relative lg:translate-x-0 lg:flex"
       >
         <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-neon-cyan/35 to-transparent" />
 

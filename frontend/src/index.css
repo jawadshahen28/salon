@@ -404,3 +404,401 @@
     box-shadow: 0 0 24px rgba(255, 184, 0, 0.28), 0 0 64px rgba(255, 184, 0, 0.1);
   }
 }
+
+:root {
+  --theme-app-bg:
+    radial-gradient(circle at 82% 8%, rgba(108, 92, 255, 0.22), transparent 28rem),
+    radial-gradient(circle at 14% 18%, rgba(0, 209, 255, 0.14), transparent 30rem),
+    radial-gradient(circle at 45% 100%, rgba(0, 255, 163, 0.08), transparent 28rem),
+    linear-gradient(140deg, #020611 0%, #06101d 42%, #050814 100%);
+  --theme-grid-line: rgba(255, 255, 255, 0.035);
+  --theme-grid-mask: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent 82%);
+  --theme-ambient-bg:
+    linear-gradient(115deg, transparent 0%, rgba(108, 92, 255, 0.08) 38%, transparent 62%),
+    linear-gradient(120deg, rgba(108, 92, 255, 0.08), transparent 34%, rgba(0, 209, 255, 0.07));
+  --theme-text-primary: #ffffff;
+  --theme-text-80: rgba(255, 255, 255, 0.8);
+  --theme-text-70: rgba(255, 255, 255, 0.7);
+  --theme-text-68: rgba(255, 255, 255, 0.68);
+  --theme-text-64: rgba(255, 255, 255, 0.64);
+  --theme-text-60: rgba(255, 255, 255, 0.6);
+  --theme-text-55: rgba(255, 255, 255, 0.55);
+  --theme-text-50: rgba(255, 255, 255, 0.5);
+  --theme-text-45: rgba(255, 255, 255, 0.45);
+  --theme-text-42: rgba(255, 255, 255, 0.42);
+  --theme-text-40: rgba(255, 255, 255, 0.4);
+  --theme-text-38: rgba(255, 255, 255, 0.38);
+  --theme-text-35: rgba(255, 255, 255, 0.35);
+  --theme-text-34: rgba(255, 255, 255, 0.34);
+  --theme-text-32: rgba(255, 255, 255, 0.32);
+  --theme-text-30: rgba(255, 255, 255, 0.3);
+  --theme-text-22: rgba(255, 255, 255, 0.22);
+  --theme-card-bg: rgba(255, 255, 255, 0.055);
+  --theme-card-hover-bg: rgba(255, 255, 255, 0.075);
+  --theme-card-border: rgba(255, 255, 255, 0.1);
+  --theme-line: rgba(255, 255, 255, 0.08);
+  --theme-soft-line: rgba(255, 255, 255, 0.1);
+  --theme-card-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.34),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 -1px 0 rgba(255, 255, 255, 0.03) inset;
+  --theme-card-shine:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.11), transparent 34%),
+    radial-gradient(circle at 18% 12%, rgba(0, 209, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 88% 0%, rgba(108, 92, 255, 0.11), transparent 32%);
+  --theme-input-bg: rgba(2, 6, 17, 0.5);
+  --theme-input-focus-bg: rgba(2, 6, 17, 0.7);
+  --theme-inset-bg: rgba(2, 6, 17, 0.4);
+  --theme-row-bg: rgba(255, 255, 255, 0.045);
+  --theme-row-hover-bg: rgba(255, 255, 255, 0.075);
+  --theme-muted-bg: rgba(255, 255, 255, 0.1);
+  --theme-muted-hover-bg: rgba(255, 255, 255, 0.065);
+  --theme-chrome-bg: rgba(2, 6, 17, 0.7);
+  --theme-sidebar-bg: rgba(2, 6, 17, 0.72);
+  --theme-overlay-bg: rgba(2, 6, 17, 0.75);
+  --theme-modal-backdrop-bg: rgba(2, 6, 17, 0.82);
+  --theme-shimmer: rgba(255, 255, 255, 0.07);
+  --chart-grid: rgba(255, 255, 255, 0.06);
+  --chart-axis: rgba(255, 255, 255, 0.22);
+  --chart-tick: rgba(255, 255, 255, 0.45);
+}
+
+.salon-theme-shell[data-theme='light'] {
+  --theme-app-bg:
+    radial-gradient(circle at 82% 6%, rgba(0, 209, 255, 0.18), transparent 26rem),
+    radial-gradient(circle at 12% 16%, rgba(255, 184, 0, 0.15), transparent 28rem),
+    radial-gradient(circle at 42% 100%, rgba(0, 255, 163, 0.12), transparent 30rem),
+    linear-gradient(140deg, #f8fbff 0%, #eef7f6 48%, #fff8ec 100%);
+  --theme-grid-line: rgba(15, 23, 42, 0.055);
+  --theme-grid-mask: linear-gradient(to bottom, rgba(0, 0, 0, 0.42), transparent 84%);
+  --theme-ambient-bg:
+    linear-gradient(115deg, transparent 0%, rgba(0, 209, 255, 0.08) 38%, transparent 62%),
+    linear-gradient(120deg, rgba(255, 184, 0, 0.1), transparent 36%, rgba(0, 209, 255, 0.08));
+  --theme-text-primary: #0f172a;
+  --theme-text-80: rgba(15, 23, 42, 0.8);
+  --theme-text-70: rgba(15, 23, 42, 0.7);
+  --theme-text-68: rgba(15, 23, 42, 0.68);
+  --theme-text-64: rgba(15, 23, 42, 0.64);
+  --theme-text-60: rgba(15, 23, 42, 0.6);
+  --theme-text-55: rgba(15, 23, 42, 0.55);
+  --theme-text-50: rgba(15, 23, 42, 0.5);
+  --theme-text-45: rgba(15, 23, 42, 0.45);
+  --theme-text-42: rgba(15, 23, 42, 0.42);
+  --theme-text-40: rgba(15, 23, 42, 0.4);
+  --theme-text-38: rgba(15, 23, 42, 0.38);
+  --theme-text-35: rgba(15, 23, 42, 0.35);
+  --theme-text-34: rgba(15, 23, 42, 0.34);
+  --theme-text-32: rgba(15, 23, 42, 0.32);
+  --theme-text-30: rgba(15, 23, 42, 0.3);
+  --theme-text-22: rgba(15, 23, 42, 0.22);
+  --theme-card-bg: rgba(255, 255, 255, 0.78);
+  --theme-card-hover-bg: rgba(255, 255, 255, 0.92);
+  --theme-card-border: rgba(15, 23, 42, 0.1);
+  --theme-line: rgba(15, 23, 42, 0.1);
+  --theme-soft-line: rgba(15, 23, 42, 0.12);
+  --theme-card-shadow:
+    0 24px 70px rgba(15, 23, 42, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 -1px 0 rgba(15, 23, 42, 0.04) inset;
+  --theme-card-shine:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), transparent 36%),
+    radial-gradient(circle at 18% 12%, rgba(0, 209, 255, 0.1), transparent 34%),
+    radial-gradient(circle at 88% 0%, rgba(255, 184, 0, 0.12), transparent 32%);
+  --theme-input-bg: rgba(255, 255, 255, 0.84);
+  --theme-input-focus-bg: rgba(255, 255, 255, 0.96);
+  --theme-inset-bg: rgba(255, 255, 255, 0.66);
+  --theme-row-bg: rgba(255, 255, 255, 0.62);
+  --theme-row-hover-bg: rgba(255, 255, 255, 0.88);
+  --theme-muted-bg: rgba(15, 23, 42, 0.06);
+  --theme-muted-hover-bg: rgba(15, 23, 42, 0.075);
+  --theme-chrome-bg: rgba(255, 255, 255, 0.78);
+  --theme-sidebar-bg: rgba(255, 255, 255, 0.82);
+  --theme-overlay-bg: rgba(15, 23, 42, 0.32);
+  --theme-modal-backdrop-bg: rgba(15, 23, 42, 0.36);
+  --theme-shimmer: rgba(15, 23, 42, 0.08);
+  --chart-grid: rgba(15, 23, 42, 0.1);
+  --chart-axis: rgba(15, 23, 42, 0.24);
+  --chart-tick: rgba(15, 23, 42, 0.58);
+}
+
+.salon-theme-shell {
+  isolation: isolate;
+  color: var(--theme-text-primary);
+  background: var(--theme-app-bg);
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+.theme-grid-layer,
+.theme-ambient-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.theme-grid-layer {
+  background-image:
+    linear-gradient(var(--theme-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--theme-grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: var(--theme-grid-mask);
+}
+
+.theme-ambient-layer {
+  background: var(--theme-ambient-bg);
+  animation: aurora 14s ease-in-out infinite alternate;
+}
+
+.theme-navbar {
+  border-color: var(--theme-line);
+  background-color: var(--theme-chrome-bg);
+}
+
+.theme-sidebar {
+  border-color: var(--theme-line);
+  background-color: var(--theme-sidebar-bg);
+}
+
+.theme-mobile-overlay {
+  background-color: var(--theme-overlay-bg);
+}
+
+.theme-modal-backdrop {
+  background-color: var(--theme-modal-backdrop-bg);
+}
+
+.theme-toggle-button {
+  border-color: var(--theme-card-border);
+  background: var(--theme-muted-bg);
+  color: var(--theme-text-60);
+}
+
+.theme-toggle-button:hover {
+  background: var(--theme-muted-hover-bg);
+  color: var(--theme-text-primary);
+}
+
+.glass-card {
+  border-color: var(--theme-card-border);
+  background: var(--theme-card-bg);
+  box-shadow: var(--theme-card-shadow);
+}
+
+.glass-card::before {
+  background: var(--theme-card-shine);
+}
+
+.glass-card-hover:hover,
+.stat-card:hover,
+.metric-panel:hover {
+  background: var(--theme-card-hover-bg);
+}
+
+.ghost-btn {
+  border-color: var(--theme-card-border);
+  background: var(--theme-card-bg);
+  color: var(--theme-text-80);
+}
+
+.ghost-btn:hover {
+  color: var(--theme-text-primary);
+}
+
+.input-field {
+  border-color: var(--theme-card-border);
+  background: var(--theme-input-bg);
+  color: var(--theme-text-primary);
+}
+
+.input-field::placeholder {
+  color: var(--theme-text-30);
+}
+
+.input-field:hover {
+  border-color: var(--theme-soft-line);
+}
+
+.input-field:focus {
+  background: var(--theme-input-focus-bg);
+}
+
+.badge-done {
+  border-color: var(--theme-card-border);
+  background: var(--theme-muted-bg);
+  color: var(--theme-text-40);
+}
+
+.sidebar-link {
+  color: var(--theme-text-60);
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  color: var(--theme-text-primary);
+}
+
+.sidebar-link:hover {
+  background: var(--theme-muted-hover-bg);
+}
+
+.page-title {
+  color: var(--theme-text-primary);
+}
+
+.page-subtitle {
+  color: var(--theme-text-40);
+}
+
+.surface-row {
+  border-color: var(--theme-card-border);
+  background: var(--theme-row-bg);
+}
+
+.surface-row:hover {
+  background: var(--theme-row-hover-bg);
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, var(--theme-shimmer) 50%, transparent 100%);
+}
+
+.text-gradient-gold,
+.text-gradient-cyber {
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.salon-theme-shell[data-theme='light'] .text-gradient-cyber {
+  background-image: linear-gradient(to left, #0f172a, #00a6c8, #5b50e6);
+}
+
+.salon-theme-shell[data-theme='light'] .text-white {
+  color: var(--theme-text-primary) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .hover\:text-white:hover {
+  color: var(--theme-text-primary) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/80 {
+  color: var(--theme-text-80) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/70 {
+  color: var(--theme-text-70) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/68 {
+  color: var(--theme-text-68) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/64 {
+  color: var(--theme-text-64) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/60 {
+  color: var(--theme-text-60) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/55 {
+  color: var(--theme-text-55) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/50 {
+  color: var(--theme-text-50) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/45 {
+  color: var(--theme-text-45) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/42 {
+  color: var(--theme-text-42) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/40 {
+  color: var(--theme-text-40) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/38 {
+  color: var(--theme-text-38) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/35 {
+  color: var(--theme-text-35) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/34 {
+  color: var(--theme-text-34) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/32 {
+  color: var(--theme-text-32) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/30 {
+  color: var(--theme-text-30) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .text-white\/22 {
+  color: var(--theme-text-22) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .border-white\/8 {
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .border-white\/10 {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .border-white\/20 {
+  border-color: rgba(15, 23, 42, 0.18) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .bg-white\/5 {
+  background-color: rgba(15, 23, 42, 0.045) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .bg-white\/8 {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .bg-white\/10 {
+  background-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .hover\:bg-white\/5:hover {
+  background-color: rgba(15, 23, 42, 0.07) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .bg-cyber-950\/40 {
+  background-color: var(--theme-inset-bg) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .bg-cyber-950\/50 {
+  background-color: var(--theme-input-bg) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .bg-cyber-950\/70,
+.salon-theme-shell[data-theme='light'] .bg-cyber-950\/72 {
+  background-color: var(--theme-chrome-bg) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .bg-cyber-950\/75,
+.salon-theme-shell[data-theme='light'] .bg-cyber-950\/82 {
+  background-color: var(--theme-modal-backdrop-bg) !important;
+}
+
+.salon-theme-shell[data-theme='light'] .focus\:bg-cyber-950\/70:focus {
+  background-color: var(--theme-input-focus-bg) !important;
+}
+
+.salon-theme-shell[data-theme='light'] *::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.salon-theme-shell[data-theme='light'] *::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(0, 169, 204, 0.72), rgba(255, 184, 0, 0.62));
+}

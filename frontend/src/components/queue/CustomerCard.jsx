@@ -9,14 +9,14 @@ const STATUS_CONFIG = {
     label: 'قيد الانتظار',
     class: 'badge-waiting',
     next: 'ready',
-    nextLabel: 'تأهيل',
+    nextLabel: 'البدء',
     nextColor: 'border-neon-green/25 bg-neon-green/10 text-neon-green hover:bg-neon-green/16'
   },
   ready: {
     label: 'جاهز',
     class: 'badge-ready',
     next: 'done',
-    nextLabel: 'إنهاء الخدمة',
+    nextLabel: 'إنهاء الحلاقة',
     nextColor: 'border-neon-gold/25 bg-neon-gold/10 text-neon-gold hover:bg-neon-gold/16'
   },
   done: {
