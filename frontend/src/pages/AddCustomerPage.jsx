@@ -13,6 +13,8 @@ const PRICE_OPTIONS = [
   { value: 20, label: '20 ₪' },
 ];
 
+const CUSTOMER_SLOT_MINUTES = 20;
+
 export default function AddCustomerPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,7 +30,7 @@ export default function AddCustomerPage() {
       setQueueInfo({
         count: active.length,
         nextNumber: active.length + 1,
-        waitMinutes: active.length * 30
+        waitMinutes: active.length * CUSTOMER_SLOT_MINUTES
       });
     } catch {}
   };

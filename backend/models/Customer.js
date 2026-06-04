@@ -39,7 +39,7 @@ const customerSchema = new mongoose.Schema({
   },
   duration: {
     type: Number,
-    default: 30 // minutes
+    default: 20 // minutes
   },
   date: {
     type: String, // YYYY-MM-DD format for daily grouping

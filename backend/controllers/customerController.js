@@ -1,6 +1,8 @@
 import Customer from '../models/Customer.js';
 import QueueCounter from '../models/QueueCounter.js';
 
+const CUSTOMER_SLOT_MINUTES = 20;
+
 const formatLocalDate = (date = new Date()) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -71,7 +73,7 @@ const ensureUniqueQueueNumbersForDate = async (date) => {
 // Calculate expected time for a customer based on queue position
 const calculateExpectedTime = (queuePosition, baseTime = new Date()) => {
   const expectedTime = new Date(baseTime);
-  expectedTime.setMinutes(expectedTime.getMinutes() + (queuePosition * 30));
+  expectedTime.setMinutes(expectedTime.getMinutes() + (queuePosition * CUSTOMER_SLOT_MINUTES));
   return expectedTime;
 };
 
@@ -92,7 +94,7 @@ export const addCustomer = async (req, res) => {
     const now = new Date();
 
     // Calculate expected time based on queue position
-    const waitingMinutes = activeCustomers.length * 30;
+    const waitingMinutes = activeCustomers.length * CUSTOMER_SLOT_MINUTES;
     const expectedTime = new Date(now);
     expectedTime.setMinutes(expectedTime.getMinutes() + waitingMinutes);
 
@@ -148,7 +150,7 @@ export const updateCustomerStatus = async (req, res) => {
       // Smart time logic: calculate actual duration
       if (customer.startTime) {
         const actualDuration = Math.round((now - customer.startTime) / 60000);
-        const savedMinutes = Math.max(0, 30 - actualDuration);
+        const savedMinutes = Math.max(0, CUSTOMER_SLOT_MINUTES - actualDuration);
 
         // Update remaining customers' expected times
         if (savedMinutes > 0) {
